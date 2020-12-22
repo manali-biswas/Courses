@@ -36,11 +36,11 @@ class Main extends Component {
             <div>
                 <Header />
                 <Switch>
-                    <Route path="/home" component={HomePage} />
+                    <Route path="/" component={HomePage} />
                     <Route exact path="/skills" component={ () => <Skills courses={this.state.courses} onClick={(course) => this.onCourseClick(course)} selectedCourse={this.state.selectedCourse} />} />
                     <Route path="/about" component={About} />
                     <Route path="/contact" component={ Contact }/>
-                    <Redirect to="/home" />
+                    <Redirect to="/" />
                     </Switch> 
                 <Footer />
             </div>
