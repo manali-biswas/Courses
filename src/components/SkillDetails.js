@@ -1,5 +1,5 @@
 import { CardHeader, CardBody, CardTitle, CardText, ListGroup, ListGroupItem } from 'reactstrap';
-
+import { Link } from "react-router-dom";
 
 function SkillDetails({ course }) {
 
@@ -20,6 +20,8 @@ function SkillDetails({ course }) {
                 <ListGroup className="list-group-flush text-left" tag="ul">
                     {courseskills}
                 </ListGroup>
+                <br/>
+                <Link to={`/skills/${course.id}`} className="btn btn-info">Click here for projects</Link>
             </CardBody>
         </>
     )
