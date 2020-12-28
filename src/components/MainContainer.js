@@ -6,22 +6,21 @@ import Home from "./Home";
 import About from "./About";
 import Contact from "./Contact";
 import Projects from "./Projects";
-import { COURSES } from "../shared/courses";
-import { PROJECTS } from "../shared/projects";
 import { Component } from "react";
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import { connect } from "react-redux";
 
-class Main extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            courses: COURSES,
-            courseProjects: PROJECTS,
-            selectedCourse: null,
-        };
+//mapping redux store state with main component
+const mapStateToProps = state => {
+    return {
+        courses: state.courses,
+        courseProjects: state.courseProjects,
+        selectedCourse: state.selectedCourse
     }
-
+}
+    
+    
+class Main extends Component {
 
     onCourseClick(course) {
         this.setState({ selectedCourse: course });
@@ -33,13 +32,13 @@ class Main extends Component {
         const ProjectsWithCourseId = ({ match }) => {
             const courseId = parseInt(match.params.id);
             return (
-                <Projects course_name={this.state.courses.filter((course) => course.id === courseId)[0].name} projects={this.state.courseProjects.filter((project) => project.course_id === courseId)} />
+                <Projects course_name={this.props.courses.filter((course) => course.id === courseId)[0].name} projects={this.props.courseProjects.filter((project) => project.course_id === courseId)} />
             )
         }
 
         const HomePage = () => {
             return (
-                <Home course={ this.state.courses.filter((course) => course.featured)[0] }/>
+                <Home course={ this.props.courses.filter((course) => course.featured)[0] }/>
             )
         }
 
@@ -48,7 +47,7 @@ class Main extends Component {
                 <Header />
                 <Switch>
                     <Route exact path="/" component={HomePage} />
-                    <Route exact path="/skills" component={ () => <Skills courses={this.state.courses} onClick={(course) => this.onCourseClick(course)} selectedCourse={this.state.selectedCourse} />} />
+                    <Route exact path="/skills" component={ () => <Skills courses={this.props.courses} onClick={(course) => this.onCourseClick(course)} selectedCourse={this.props.selectedCourse} />} />
                     <Route exact path="/about" component={About} />
                     <Route exact path="/contact" component={Contact} />
                     <Route path="/skills/:id" component={ ProjectsWithCourseId }/>
@@ -60,4 +59,5 @@ class Main extends Component {
     }
 }
 
-export default Main;
+export default withRouter(connect(mapStateToProps)(Main));
+// use withRouter if using react-router
