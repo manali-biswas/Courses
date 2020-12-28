@@ -5,8 +5,7 @@ import { PROJECTS } from "../shared/projects";
 
 export const initialState = {
     courses: COURSES,
-    courseProjects: PROJECTS,
-    selectedCourse: null
+    courseProjects: PROJECTS
 };
 
 export const Reducer = (state=initialState, action) => {

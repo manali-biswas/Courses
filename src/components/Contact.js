@@ -1,39 +1,28 @@
 import { Component } from 'react';
-import { ListGroup, ListGroupItem, Form, FormGroup, Label, Input, Button, FormFeedback } from "reactstrap";
+import { ListGroup, ListGroupItem, Label, Button, FormGroup } from "reactstrap";
+import { Control, LocalForm, Errors } from "react-redux-form";
+
+const required = (val) => val && val.length;
+const maxLength = (len) => (val) => !(val) || (val.length <= len);
+const minLength = (len) => (val) => (val) && (val.length >= len);
+const isNumber = (val) => !isNaN(Number(val));
+const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
 class Contact extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            firstname: '',
-            lastname: '',
-            telnum: '',
-            email: '',
-            agree: false,
-            contactType: 'Tel.',
-            message: '',
-            touched: { //when to make form validation
-                firstname: false,
-                lastname: false,
-                telnum: false,
-                email: false
-            }
-        }
-
         this.onSubmit = this.onSubmit.bind(this);
-        this.OnInputChange = this.OnInputChange.bind(this);
-        this.onBlur = this.onBlur.bind(this);
     }
 
-    onBlur=(field)=>(evt)=> {
+    /*onBlur=(field)=>(evt)=> {
         this.setState({
             touched:{...this.state.touched,[field]: true}
         })
-    }
+    }*/
 
     // to show the value when we type in form (since form is tied to controlling state)
-    OnInputChange(event) {
+    /*OnInputChange(event) {
         const target = event.target;
         const value = target.type === "checkbox" ? target.checked : target.value;
         const name = target.name;
@@ -41,16 +30,16 @@ class Contact extends Component {
         this.setState({
             [name]:value
         })
-    }
+    }*/
 
-    onSubmit(event) {
+    onSubmit(values) {
         
-        console.log("Current state is:" + JSON.stringify(this.state));
-        alert("Current state is:" + JSON.stringify(this.state));
-        event.preventDefault(); // to prevent going to previous page
+        console.log("Current state is:" + JSON.stringify(values));
+        alert("Current state is:" + JSON.stringify(values));
+        //event.preventDefault(); // to prevent going to previous page
     }
 
-    validate(firstname, lastname, telnum, email) {
+    /*validate(firstname, lastname, telnum, email) {
         const errors = {
             firstname: '',
             lastname: '',
@@ -81,10 +70,10 @@ class Contact extends Component {
         }
 
         return errors;
-    }
+    }*/
 
     render() {
-        const errors = this.validate(this.state.firstname, this.state.lastname, this.state.telnum, this.state.email);
+        //const errors = this.validate(this.state.firstname, this.state.lastname, this.state.telnum, this.state.email);
     return (
         <div className="container">
             <div className="text-center container mt-5">
@@ -107,47 +96,63 @@ class Contact extends Component {
             <div className="container">
                 <h3>Send your feedback</h3>
                 <div className="container">
-                    <Form onSubmit={this.onSubmit}>
+                    <LocalForm onSubmit={(values)=>this.onSubmit(values)}>
                         <FormGroup>
                             <Label htmlFor="firstname">First Name</Label>
-                            <Input type="text" id="firstname" name="firstname" placeholder="First Name" value={this.state.firstname} onChange={this.OnInputChange} onBlur={this.onBlur('firstname')} valid={errors.firstname === ''} invalid={ errors.firstname!=='' }/>
-                            <FormFeedback>{errors.firstname}</FormFeedback>
+                            <Control.text model=".firstname" id="firstname" name="firstname" placeholder="First Name" className="form-control" validators={{required,minLength:minLength(3),maxLength:maxLength(15)}}/>
+                            <Errors className="text-danger" model=".firstname" show="touched" messages={{
+                                required: "Required",
+                                minLength: "Minimum 2 characters required",
+                                maxLength: "Maximum 15 characters allowed"
+                            }}/>
                         </FormGroup>
                         <FormGroup>
                             <Label htmlFor="lastname">Last Name</Label>
-                            <Input type="text" id="lastname" name="lastname" placeholder="Last Name" value={this.state.lastname} onChange={this.OnInputChange} onBlur={ this.onBlur('lastname') } valid={errors.lastname === ''} invalid={ errors.lastname!=='' }/>
-                            <FormFeedback>{errors.lastname}</FormFeedback>
+                            <Control.text model=".lastname" className="form-control" id="lastname" name="lastname" placeholder="Last Name" validators={{required,minLength:minLength(3),maxLength:maxLength(15)}}/>
+                            <Errors className="text-danger" model=".lastname" show="touched" messages={{
+                                required: "Required",
+                                minLength: "Minimum 2 characters required",
+                                maxLength: "Maximum 15 characters allowed"
+                            }}/>
                         </FormGroup>
                         <FormGroup>
                             <Label htmlFor="telnum">Telephone Number</Label>
-                            <Input type="tel" id="telnum" name="telnum" placeholder="Tel. number" value={this.state.telnum} onChange={this.OnInputChange} onBlur={ this.onBlur('telnum') } valid={errors.telnum === ''} invalid={ errors.telnum!=='' }/>
-                            <FormFeedback>{errors.telnum}</FormFeedback>
+                            <Control.text model=".telnum" className="form-control" id="telnum" name="telnum" placeholder="Tel. number" validators={{required,minLength:minLength(3),maxLength:maxLength(15),isNumber}}/>
+                            <Errors className="text-danger" model=".telnum" show="touched" messages={{
+                                required: "Required",
+                                minLength: "Minimum 2 numbers required",
+                                maxLength: "Maximum 15 numbers allowed",
+                                isNumber: "Must be a number"
+                            }}/>
                         </FormGroup>
                         <FormGroup>
                             <Label htmlFor="email">Email</Label>
-                            <Input type="email" id="email" name="email" placeholder="Email" value={this.state.email} onChange={this.OnInputChange} onBlur={ this.onBlur('email') } valid={errors.email === ''} invalid={ errors.email!=='' }/>
-                            <FormFeedback>{errors.email}</FormFeedback>
+                            <Control.text model=".email" className="form-control" id="email" name="email" placeholder="Email" validators={{required,validEmail}}/>
+                            <Errors className="text-danger" model=".email" show="touched" messages={{
+                                required: "Required",
+                                validEmail: "Invalid Email Address"
+                            }}/>
                         </FormGroup>
                         <FormGroup>
                             <FormGroup check>
                                 <Label check htmlFor="agree">
-                                <Input type="checkbox" name="agree" checked={this.state.agree} onChange={this.OnInputChange} onBlur={ this.onBlur('agree') }/> {' '}
+                                <Control.checkbox model=".agree" className="form-check-input" name="agree"/> {' '}
                                 <strong>May we contact you?</strong>
                                 </Label>
                             </FormGroup>
-                        <Input type="select" name="contactType" value={this.state.contactType} onChange={this.OnInputChange}  onBlur={ this.onBlur('contactType') }>
+                        <Control.select model=".contactType" name="contactType" className="form-control">
                             <option>Tel.</option>
                             <option>Email</option>
-                        </Input>
+                        </Control.select>
                         </FormGroup>
                         <FormGroup>
                             <Label htmlFor="feedback">Feedback</Label>
-                            <Input type="textarea" id="message" name="message" rows="12" value={this.state.message} onChange={this.OnInputChange} onBlur={ this.onBlur('message') }/>
+                            <Control.textarea model=".message" id="message" name="message" rows="12" className="form-control"/>
                         </FormGroup>
                         <FormGroup>
                             <Button type="submit" color="primary">Send Feedback</Button>
                         </FormGroup>
-                    </Form>
+                    </LocalForm>
                 </div>
             </div>
         </div>

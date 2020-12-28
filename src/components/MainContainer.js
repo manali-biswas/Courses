@@ -14,13 +14,20 @@ import { connect } from "react-redux";
 const mapStateToProps = state => {
     return {
         courses: state.courses,
-        courseProjects: state.courseProjects,
-        selectedCourse: state.selectedCourse
+        courseProjects: state.courseProjects
     }
 }
     
     
 class Main extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state={
+            selectedCourse: null
+        }
+    }
 
     onCourseClick(course) {
         this.setState({ selectedCourse: course });
@@ -47,7 +54,7 @@ class Main extends Component {
                 <Header />
                 <Switch>
                     <Route exact path="/" component={HomePage} />
-                    <Route exact path="/skills" component={ () => <Skills courses={this.props.courses} onClick={(course) => this.onCourseClick(course)} selectedCourse={this.props.selectedCourse} />} />
+                    <Route exact path="/skills" component={ () => <Skills courses={this.props.courses} onClick={(course) => this.onCourseClick(course)} selectedCourse={this.state.selectedCourse} />} />
                     <Route exact path="/about" component={About} />
                     <Route exact path="/contact" component={Contact} />
                     <Route path="/skills/:id" component={ ProjectsWithCourseId }/>
