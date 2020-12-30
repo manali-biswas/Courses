@@ -1,8 +1,14 @@
-import { createStore } from "redux";
-import { Reducer, initialState } from "./reducer";
+import { createStore, combineReducers } from "redux";
+import { Courses } from "./courses";
+import { Projects } from "./projects";
 
 export const configureStore = () => {
-    const store = createStore(Reducer, initialState);
+    const store = createStore(
+        combineReducers({
+            courses: Courses,
+            courseProjects: Projects
+        })
+    );
 
     return store;
 }
