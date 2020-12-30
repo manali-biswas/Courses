@@ -1,5 +1,6 @@
 import { Card, CardBody, CardHeader, CardImg, CardTitle } from 'reactstrap';
 import SkillDetails from './SkillDetails';
+import { Loading } from './Loading';
 
 function RenderCourse({ selectedCourse, course, onClick }) {
     if (course != null) {
@@ -30,6 +31,22 @@ function RenderCourse({ selectedCourse, course, onClick }) {
 }
 
 const Skills = (props) => {
+
+    if (props.coursesLoading) {
+        return (
+            <div className="container text-center">
+                    <Loading />
+            </div>    
+        )
+    }
+
+    else if (props.coursesErr) {
+        return (
+            <div className="container text-center">
+                <h4>{ props.coursesErr }</h4>
+            </div>
+        )
+    }
 
     const skills = props.courses.map((course) => {
         return (

@@ -1,6 +1,7 @@
 import { Card, CardBody, CardText, CardTitle, Button, Modal, ModalHeader, ModalBody, Row, Col } from "reactstrap";
 import { LocalForm, Control, Errors } from "react-redux-form";
 import { Component } from "react";
+import { Loading } from './Loading';
 
 const required = (val) => val && val.length;
 const minLength = (len) => (val) => (val) && (val.length >= len);
@@ -59,6 +60,22 @@ class Projects extends Component {
     
     render() {
             
+        if (this.props.coursesLoading) {
+            return (
+                <div className="container text-center">
+                        <Loading />
+                </div>    
+            )
+        }
+    
+        else if (this.props.coursesErr) {
+            return (
+                <div className="container text-center">
+                    <h4>{ this.props.coursesErr }</h4>
+                </div>
+            )
+        }
+
         const RenderProject = this.props.projects.map((project) => {
             return (  
                 <Card key={project.id} className="mb-3 border-dark">

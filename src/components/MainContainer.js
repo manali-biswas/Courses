@@ -9,7 +9,7 @@ import Projects from "./Projects";
 import { Component } from "react";
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
-import { addProject } from "../redux/ActionCreators";
+import { addProject, fetchCourses } from "../redux/ActionCreators";
 
 //mapping redux store state with main component
 const mapStateToProps = state => {
@@ -20,7 +20,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    addProject: (courseId,name,description,link,github)=>dispatch(addProject(courseId,name,description,link,github))
+    addProject: (courseId, name, description, link, github) => dispatch(addProject(courseId, name, description, link, github)),
+    fetchCourses: ()=>dispatch(fetchCourses())
 })
     
     
@@ -34,6 +35,10 @@ class Main extends Component {
         }
     }
 
+    componentDidMount() {
+        this.props.fetchCourses();
+    }
+
     onCourseClick(course) {
         this.setState({ selectedCourse: course });
     }
@@ -44,14 +49,17 @@ class Main extends Component {
         const ProjectsWithCourseId = ({ match }) => {
             const courseId = parseInt(match.params.id);
             return (
-                <Projects course={this.props.courses.filter((course) => course.id === courseId)[0]} projects={this.props.courseProjects.filter((project) => project.course_id === courseId)}
-                    addProject={ this.props.addProject }/>
+                <Projects course={this.props.courses.courses.filter((course) => course.id === courseId)[0]} projects={this.props.courseProjects.filter((project) => project.course_id === courseId)}
+                    addProject={ this.props.addProject } coursesLoading={this.props.courses.isLoading}
+                    coursesErr={ this.props.courses.err }/>
             )
         }
 
         const HomePage = () => {
             return (
-                <Home course={ this.props.courses.filter((course) => course.featured)[0] }/>
+                <Home course={this.props.courses.courses.filter((course) => course.featured)[0]}
+                    coursesLoading={this.props.courses.isLoading}
+                    coursesErr={ this.props.courses.err }/>
             )
         }
 
@@ -60,7 +68,8 @@ class Main extends Component {
                 <Header />
                 <Switch>
                     <Route exact path="/" component={HomePage} />
-                    <Route exact path="/skills" component={ () => <Skills courses={this.props.courses} onClick={(course) => this.onCourseClick(course)} selectedCourse={this.state.selectedCourse} />} />
+                    <Route exact path="/skills" component={ () => <Skills courses={this.props.courses.courses} onClick={(course) => this.onCourseClick(course)} selectedCourse={this.state.selectedCourse} coursesLoading={this.props.courses.isLoading}
+                    coursesErr={ this.props.courses.err }/>} />
                     <Route exact path="/about" component={About} />
                     <Route exact path="/contact" component={Contact} />
                     <Route path="/skills/:id" component={ ProjectsWithCourseId }/>

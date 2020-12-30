@@ -1,6 +1,24 @@
 import { Media } from "reactstrap";
+import { Loading } from './Loading';
 
 function Home(props) {
+
+    if (props.coursesLoading) {
+        return (
+            <div className="container text-center">
+                    <Loading />
+            </div>    
+        )
+    }
+
+    else if (props.coursesErr) {
+        return (
+            <div className="container text-center">
+                <h4>{ props.coursesErr }</h4>
+            </div>
+        )
+    }
+
     return (
         <div className="container mt-5 mb-5">    
         <h2 className="text-center">Home</h2>
