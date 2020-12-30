@@ -9,6 +9,7 @@ import Projects from "./Projects";
 import { Component } from "react";
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
+import { addProject } from "../redux/ActionCreators";
 
 //mapping redux store state with main component
 const mapStateToProps = state => {
@@ -17,6 +18,10 @@ const mapStateToProps = state => {
         courseProjects: state.courseProjects
     }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+    addProject: (courseId,name,description,link,github)=>dispatch(addProject(courseId,name,description,link,github))
+})
     
     
 class Main extends Component {
@@ -39,7 +44,8 @@ class Main extends Component {
         const ProjectsWithCourseId = ({ match }) => {
             const courseId = parseInt(match.params.id);
             return (
-                <Projects course_name={this.props.courses.filter((course) => course.id === courseId)[0].name} projects={this.props.courseProjects.filter((project) => project.course_id === courseId)} />
+                <Projects course={this.props.courses.filter((course) => course.id === courseId)[0]} projects={this.props.courseProjects.filter((project) => project.course_id === courseId)}
+                    addProject={ this.props.addProject }/>
             )
         }
 
@@ -66,5 +72,5 @@ class Main extends Component {
     }
 }
 
-export default withRouter(connect(mapStateToProps)(Main));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
 // use withRouter if using react-router

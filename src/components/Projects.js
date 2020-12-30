@@ -53,7 +53,7 @@ class Projects extends Component {
 
     onSubmit(values) {
         this.toggleModal();
-        alert("Current state is: " + JSON.stringify(values));
+        this.props.addProject(this.props.course.id, values.name, values.description, values.link, values.github);
     }
     
     
@@ -80,7 +80,7 @@ class Projects extends Component {
     return (
         <>
         <div className="container mt-5 mb-5 text-center">
-            <h2>Projects on {this.props.course_name}</h2>
+            <h2>Projects on {this.props.course.name}</h2>
             <div className="mt-5 container w-75">
                 {RenderProject}
             </div>
@@ -91,7 +91,7 @@ class Projects extends Component {
             <ModalHeader>Add Project</ModalHeader>
                 <ModalBody>
                     <div className="container">
-                <LocalForm onSubmit={this.onSubmit}>
+                        <LocalForm onSubmit={this.onSubmit}>
                         <Row className="form-group">
                             <Col className="label col-md-4" htmlFor="name">Project Name</Col>
                                 <Control.text model=".name" id="name" name="name" placeholder="Project Name" className="col-md-8 form-control" validators={{ required, minLength:minLength(2) }} />
