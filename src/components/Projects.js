@@ -6,6 +6,32 @@ const required = (val) => val && val.length;
 const minLength = (len) => (val) => (val) && (val.length >= len);
 const maxLength = (len) => (val) => !val || (val.length <= len);
 
+function RenderLink({ link }) {
+    if (link === undefined) {
+        return (    
+            <a href={link} className="btn btn-primary disabled">Hosted Project Link</a>
+        )
+    }
+    else {
+        return (    
+            <a href={link} className="btn btn-primary">Hosted Project Link</a>
+        )    
+    }
+}
+
+function RenderGithub({ github }) {
+    if (github === undefined) {
+        return (    
+            <a href={github} className="btn btn-dark ml-3 disabled">Github Link</a>
+        )
+    }
+    else {
+        return (    
+            <a href={github} className="btn btn-dark ml-3">Github Link</a>
+        )    
+    }
+}
+
 class Projects extends Component {
 
     constructor(props) {
@@ -43,9 +69,8 @@ class Projects extends Component {
         <CardText>
             {project.description}
         </CardText>
-        {/* Separate components for link and github link */}
-            <a href={project.link} className="btn btn-primary">Hosted Project Link</a>
-            <a href={project.github} className="btn btn-dark ml-3">Github Link</a>
+            <RenderLink link={ project.link }/>
+            <RenderGithub github={ project.github }/>
         </CardBody>
         </Card>
             )
