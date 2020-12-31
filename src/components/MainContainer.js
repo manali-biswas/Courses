@@ -10,6 +10,7 @@ import { Component } from "react";
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
 import { addProject, fetchCourses } from "../redux/ActionCreators";
+import { actions } from "react-redux-form";
 
 //mapping redux store state with main component
 const mapStateToProps = state => {
@@ -21,7 +22,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch) => ({
     addProject: (courseId, name, description, link, github) => dispatch(addProject(courseId, name, description, link, github)),
-    fetchCourses: ()=>dispatch(fetchCourses())
+    fetchCourses: () => dispatch(fetchCourses()),
+    resetFeedbackForm: ()=>{dispatch(actions.reset('feedback'))}
 })
     
     
@@ -71,7 +73,7 @@ class Main extends Component {
                     <Route exact path="/skills" component={ () => <Skills courses={this.props.courses.courses} onClick={(course) => this.onCourseClick(course)} selectedCourse={this.state.selectedCourse} coursesLoading={this.props.courses.isLoading}
                     coursesErr={ this.props.courses.err }/>} />
                     <Route exact path="/about" component={About} />
-                    <Route exact path="/contact" component={Contact} />
+                    <Route exact path="/contact" component={()=><Contact resetFeedbackForm={this.props.resetFeedbackForm}/>} />
                     <Route path="/skills/:id" component={ ProjectsWithCourseId }/>
                     <Redirect to="/" />
                     </Switch> 

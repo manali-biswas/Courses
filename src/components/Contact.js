@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { ListGroup, ListGroupItem, Label, Button, FormGroup } from "reactstrap";
-import { Control, LocalForm, Errors } from "react-redux-form";
+import { Control, Form, Errors, actions } from "react-redux-form";
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -36,6 +36,7 @@ class Contact extends Component {
         
         console.log("Current state is:" + JSON.stringify(values));
         alert("Current state is:" + JSON.stringify(values));
+        this.props.resetFeedbackForm();
         //event.preventDefault(); // to prevent going to previous page
     }
 
@@ -96,7 +97,7 @@ class Contact extends Component {
             <div className="container">
                 <h3>Send your feedback</h3>
                 <div className="container">
-                    <LocalForm onSubmit={(values)=>this.onSubmit(values)}>
+                    <Form model="feedback" onSubmit={(values)=>this.onSubmit(values)}>
                         <FormGroup>
                             <Label htmlFor="firstname">First Name</Label>
                             <Control.text model=".firstname" id="firstname" name="firstname" placeholder="First Name" className="form-control" validators={{required,minLength:minLength(3),maxLength:maxLength(15)}}/>
@@ -152,7 +153,7 @@ class Contact extends Component {
                         <FormGroup>
                             <Button type="submit" color="primary">Send Feedback</Button>
                         </FormGroup>
-                    </LocalForm>
+                    </Form>
                 </div>
             </div>
         </div>
