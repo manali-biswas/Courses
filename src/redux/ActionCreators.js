@@ -17,7 +17,8 @@ export const fetchCourses = () => (dispatch) => {
     dispatch(coursesLoading(true));
 
     return axios.get(baseUrl + 'db.json')
-        .then(response => dispatch(addCourses(response.data.courses)));
+        .then(response => dispatch(addCourses(response.data.courses)))
+        .catch(err => dispatch(coursesFailed(err.message)));
 }
 
 export const coursesLoading = () => ({
@@ -46,5 +47,6 @@ export const addProjects = (projects) => ({
 
 export const fetchProjects = () => (dispatch) => {
     return axios.get(baseUrl + 'db.json')
-        .then(response => dispatch(addProjects(response.data.projects)));
+        .then(response => dispatch(addProjects(response.data.projects)))
+        .catch(err => dispatch(projectsFailed(err.message)));
 }
