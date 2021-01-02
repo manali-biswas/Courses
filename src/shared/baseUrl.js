@@ -1,0 +1,1 @@
+export const baseUrl = 'https://manali-biswas.github.io/data/';

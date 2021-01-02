@@ -1,5 +1,6 @@
 import * as ActionTypes from './ActionTypes';
-import { COURSES } from "../shared/courses";
+import { baseUrl } from "../shared/baseUrl";
+import axios from 'axios';
 
 export const addProject = (courseId, name, description, link, github) => ({
     type: ActionTypes.ADD_PROJECT,
@@ -15,9 +16,8 @@ export const addProject = (courseId, name, description, link, github) => ({
 export const fetchCourses = () => (dispatch) => {
     dispatch(coursesLoading(true));
 
-    setTimeout(() => { 
-        dispatch(addCourses(COURSES));
-    }, 2000);
+    return axios.get(baseUrl + 'db.json')
+        .then(response => dispatch(addCourses(response.data.courses)));
 }
 
 export const coursesLoading = () => ({
@@ -32,4 +32,19 @@ export const coursesFailed = (err) => ({
 export const addCourses = (courses) => ({
     type: ActionTypes.ADD_COURSES,
     payload: courses
-})
+});
+
+export const projectsFailed = (err) => ({
+    type: ActionTypes.PROJECTS_FAILED,
+    payload: err
+});
+
+export const addProjects = (projects) => ({
+    type: ActionTypes.ADD_PROJECTS,
+    payload: projects
+});
+
+export const fetchProjects = () => (dispatch) => {
+    return axios.get(baseUrl + 'db.json')
+        .then(response => dispatch(addProjects(response.data.projects)));
+}

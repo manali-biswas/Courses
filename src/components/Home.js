@@ -1,5 +1,6 @@
 import { Media } from "reactstrap";
 import { Loading } from './Loading';
+import { baseUrl } from "../shared/baseUrl";
 
 function Home(props) {
 
@@ -28,7 +29,7 @@ function Home(props) {
             Below is the course that I liked the most so far!
             </p>
             <Media className="mt-5 mb-3">
-                <img src={props.course.image} alt={props.course.name} width="100px"></img>
+                <img src={baseUrl+'public/'+props.course.image} alt={props.course.name} width="100px"></img>
                 <div className="media-body ml-5">
                     <h5>{props.course.name}</h5>
                     <p>{ props.course.description }</p>

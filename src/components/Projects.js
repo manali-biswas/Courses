@@ -76,6 +76,14 @@ class Projects extends Component {
             )
         }
 
+        else if (this.props.projectsErr) {
+            return (
+                <div className="container text-center">
+                    <h4>{ this.props.projectsErr }</h4>
+                </div>
+            )
+        }
+
         const RenderProject = this.props.projects.map((project) => {
             return (  
                 <Card key={project.id} className="mb-3 border-dark">

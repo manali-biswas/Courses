@@ -9,7 +9,7 @@ import Projects from "./Projects";
 import { Component } from "react";
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
-import { addProject, fetchCourses } from "../redux/ActionCreators";
+import { addProject, fetchCourses, fetchProjects } from "../redux/ActionCreators";
 import { actions } from "react-redux-form";
 
 //mapping redux store state with main component
@@ -23,7 +23,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch) => ({
     addProject: (courseId, name, description, link, github) => dispatch(addProject(courseId, name, description, link, github)),
     fetchCourses: () => dispatch(fetchCourses()),
-    resetFeedbackForm: ()=>{dispatch(actions.reset('feedback'))}
+    resetFeedbackForm: () => { dispatch(actions.reset('feedback')) },
+    fetchProjects: () => dispatch(fetchProjects())
 })
     
     
@@ -39,6 +40,7 @@ class Main extends Component {
 
     componentDidMount() {
         this.props.fetchCourses();
+        this.props.fetchProjects();
     }
 
     onCourseClick(course) {
@@ -51,9 +53,9 @@ class Main extends Component {
         const ProjectsWithCourseId = ({ match }) => {
             const courseId = parseInt(match.params.id);
             return (
-                <Projects course={this.props.courses.courses.filter((course) => course.id === courseId)[0]} projects={this.props.courseProjects.filter((project) => project.course_id === courseId)}
+                <Projects course={this.props.courses.courses.filter((course) => course.id === courseId)[0]} projects={this.props.courseProjects.projects.filter((project) => project.course_id === courseId)}
                     addProject={ this.props.addProject } coursesLoading={this.props.courses.isLoading}
-                    coursesErr={ this.props.courses.err }/>
+                    coursesErr={ this.props.courses.err } projectsErr={ this.props.courseProjects.err }/>
             )
         }
 

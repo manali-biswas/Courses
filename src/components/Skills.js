@@ -1,6 +1,7 @@
 import { Card, CardBody, CardHeader, CardImg, CardTitle } from 'reactstrap';
 import SkillDetails from './SkillDetails';
 import { Loading } from './Loading';
+import { baseUrl } from "../shared/baseUrl";
 
 function RenderCourse({ selectedCourse, course, onClick }) {
     if (course != null) {
@@ -15,7 +16,7 @@ function RenderCourse({ selectedCourse, course, onClick }) {
             return (
                 <Card className="h-100" onClick={() => onClick(course)}>
                     <CardHeader>{course.date}</CardHeader>
-                    <CardImg width="150px" src={course.image} alt={course.name} />
+                    <CardImg width="150px" src={ baseUrl+'public/'+course.image } alt={course.name} />
                     <CardBody className="text-center">
                         <CardTitle><h5>{course.name}</h5></CardTitle>
                     </CardBody>
