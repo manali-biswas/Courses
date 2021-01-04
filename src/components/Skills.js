@@ -16,7 +16,7 @@ function RenderCourse({ selectedCourse, course, onClick }) {
             return (
                 <Card className="h-100" onClick={() => onClick(course)}>
                     <CardHeader>{course.date}</CardHeader>
-                    <CardImg width="150px" src={ baseUrl+'public/'+course.image } alt={course.name} />
+                    <CardImg width="150px" src={ baseUrl+course.image } alt={course.name} />
                     <CardBody className="text-center">
                         <CardTitle><h5>{course.name}</h5></CardTitle>
                     </CardBody>

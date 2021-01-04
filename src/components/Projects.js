@@ -54,7 +54,7 @@ class Projects extends Component {
 
     onSubmit(values) {
         this.toggleModal();
-        this.props.addProject(this.props.course.id, values.name, values.description, values.link, values.github);
+        this.props.postProject(this.props.course.id, values.name, values.description, values.link, values.github);
     }
     
     

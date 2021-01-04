@@ -29,7 +29,7 @@ function Home(props) {
             Below is the course that I liked the most so far!
             </p>
             <Media className="mt-5 mb-3">
-                <img src={baseUrl+'public/'+props.course.image} alt={props.course.name} width="100px"></img>
+                <img src={baseUrl+props.course.image} alt={props.course.name} width="100px"></img>
                 <div className="media-body ml-5">
                     <h5>{props.course.name}</h5>
                     <p>{ props.course.description }</p>

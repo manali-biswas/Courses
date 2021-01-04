@@ -15,7 +15,6 @@ export const Projects = (state = {
         
         case ActionTypes.ADD_PROJECT:
             var project = action.payload;
-            project.id = state.projects.length;
             return { ...state, projects: state.projects.concat(project) }; // adding to memory
         default:
             return state;
