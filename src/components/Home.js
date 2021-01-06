@@ -1,7 +1,7 @@
 import { Media } from "reactstrap";
 import { Loading } from './Loading';
 import { baseUrl } from "../shared/baseUrl";
-
+import { FadeTransform } from "react-animation-components";
 function Home(props) {
 
     if (props.coursesLoading) {
@@ -25,16 +25,21 @@ function Home(props) {
         <h2 className="text-center">Home</h2>
         <div className="container d-flex flex-column justify-content-center " style={{ height: "90vh" }}>
             <p>This is a personal website to keep track of all the courses I have taken up so far and the skills I built.
-             
-            Below is the course that I liked the most so far!
+                 
+                Below is the course that I liked the most so far!
             </p>
+                <FadeTransform in
+                    transformProps={{
+                        exitTransform:'scale(0.5) translateY(-50%)'
+                    }}>
             <Media className="mt-5 mb-3">
                 <img src={baseUrl+props.course.image} alt={props.course.name} width="100px"></img>
                 <div className="media-body ml-5">
                     <h5>{props.course.name}</h5>
                     <p>{ props.course.description }</p>
                 </div>
-            </Media>
+                    </Media>
+                    </FadeTransform>
             </div>
         </div>
     )

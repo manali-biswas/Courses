@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { ListGroup, ListGroupItem, Label, Button, FormGroup } from "reactstrap";
-import { Control, Form, Errors, actions } from "react-redux-form";
+import { Control, Form, Errors } from "react-redux-form";
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -33,9 +33,7 @@ class Contact extends Component {
     }*/
 
     onSubmit(values) {
-        
-        console.log("Current state is:" + JSON.stringify(values));
-        alert("Current state is:" + JSON.stringify(values));
+        this.props.postFeedback(values.firstname, values.lastname, values.telnum, values.email, values.agree, values.contactType);
         this.props.resetFeedbackForm();
         //event.preventDefault(); // to prevent going to previous page
     }
@@ -100,7 +98,7 @@ class Contact extends Component {
                     <Form model="feedback" onSubmit={(values)=>this.onSubmit(values)}>
                         <FormGroup>
                             <Label htmlFor="firstname">First Name</Label>
-                            <Control.text model=".firstname" id="firstname" name="firstname" placeholder="First Name" className="form-control" validators={{required,minLength:minLength(3),maxLength:maxLength(15)}}/>
+                            <Control.text model=".firstname" id="firstname" name="firstname" placeholder="First Name" className="form-control" validators={{required,minLength:minLength(2),maxLength:maxLength(15)}}/>
                             <Errors className="text-danger" model=".firstname" show="touched" messages={{
                                 required: "Required",
                                 minLength: "Minimum 2 characters required",
@@ -109,7 +107,7 @@ class Contact extends Component {
                         </FormGroup>
                         <FormGroup>
                             <Label htmlFor="lastname">Last Name</Label>
-                            <Control.text model=".lastname" className="form-control" id="lastname" name="lastname" placeholder="Last Name" validators={{required,minLength:minLength(3),maxLength:maxLength(15)}}/>
+                            <Control.text model=".lastname" className="form-control" id="lastname" name="lastname" placeholder="Last Name" validators={{required,minLength:minLength(2),maxLength:maxLength(15)}}/>
                             <Errors className="text-danger" model=".lastname" show="touched" messages={{
                                 required: "Required",
                                 minLength: "Minimum 2 characters required",
@@ -118,7 +116,7 @@ class Contact extends Component {
                         </FormGroup>
                         <FormGroup>
                             <Label htmlFor="telnum">Telephone Number</Label>
-                            <Control.text model=".telnum" className="form-control" id="telnum" name="telnum" placeholder="Tel. number" validators={{required,minLength:minLength(3),maxLength:maxLength(15),isNumber}}/>
+                            <Control.text model=".telnum" className="form-control" id="telnum" name="telnum" placeholder="Tel. number" validators={{required,minLength:minLength(2),maxLength:maxLength(15),isNumber}}/>
                             <Errors className="text-danger" model=".telnum" show="touched" messages={{
                                 required: "Required",
                                 minLength: "Minimum 2 numbers required",

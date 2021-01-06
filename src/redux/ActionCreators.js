@@ -26,6 +26,25 @@ export const postProject = (courseId, name, description, link, github) => (dispa
         .catch(err => alert('Your comment could not be posted\nError: ' + err.message));
 }
 
+export const postFeedback = (firstname, lastname, telnum, email, agree, contactType) => (dispatch) => {
+    const newFeedback = {
+        firstname: firstname,
+        lastname: lastname,
+        telnum: telnum,
+        email: email,
+        agree: agree,
+        contactType: contactType
+    }
+
+    return axios.post(baseUrl + 'feedback', newFeedback, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => alert('Your Feedback:\n'+JSON.stringify(response.data)))
+        .catch(err => alert('Your feedback could not be posted\nError: ' + err.message));
+}
+
 export const fetchCourses = () => (dispatch) => {
     dispatch(coursesLoading(true));
 

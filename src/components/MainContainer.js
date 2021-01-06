@@ -9,8 +9,9 @@ import Projects from "./Projects";
 import { Component } from "react";
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
-import { postProject, fetchCourses, fetchProjects } from "../redux/ActionCreators";
+import { postProject, fetchCourses, fetchProjects, postFeedback } from "../redux/ActionCreators";
 import { actions } from "react-redux-form";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 //mapping redux store state with main component
 const mapStateToProps = state => {
@@ -24,7 +25,8 @@ const mapDispatchToProps = (dispatch) => ({
     postProject: (courseId, name, description, link, github) => dispatch(postProject(courseId, name, description, link, github)),
     fetchCourses: () => dispatch(fetchCourses()),
     resetFeedbackForm: () => { dispatch(actions.reset('feedback')) },
-    fetchProjects: () => dispatch(fetchProjects())
+    fetchProjects: () => dispatch(fetchProjects()),
+    postFeedback: (firstname, lastname, telnum, email, agree, contactType) => dispatch(postFeedback(firstname, lastname, telnum, email, agree, contactType))
 })
     
     
@@ -70,15 +72,19 @@ class Main extends Component {
         return (
             <div>
                 <Header />
-                <Switch>
-                    <Route exact path="/" component={HomePage} />
-                    <Route exact path="/skills" component={ () => <Skills courses={this.props.courses.courses} onClick={(course) => this.onCourseClick(course)} selectedCourse={this.state.selectedCourse} coursesLoading={this.props.courses.isLoading}
-                    coursesErr={ this.props.courses.err }/>} />
-                    <Route exact path="/about" component={About} />
-                    <Route exact path="/contact" component={()=><Contact resetFeedbackForm={this.props.resetFeedbackForm}/>} />
-                    <Route path="/skills/:id" component={ ProjectsWithCourseId }/>
-                    <Redirect to="/" />
-                    </Switch> 
+                <TransitionGroup>
+                    <CSSTransition key={this.props.location.key} classNames="page" timeout={300}>
+                        <Switch>
+                            <Route exact path="/" component={HomePage} />
+                            <Route exact path="/skills" component={ () => <Skills courses={this.props.courses.courses} onClick={(course) => this.onCourseClick(course)} selectedCourse={this.state.selectedCourse} coursesLoading={this.props.courses.isLoading}
+                            coursesErr={ this.props.courses.err }/>} />
+                            <Route exact path="/contact" component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} postFeedback={this.props.postFeedback}/>} />
+                            <Route exact path="/about" component={About} />
+                            <Route path="/skills/:id" component={ ProjectsWithCourseId }/>
+                            <Redirect to="/" />
+                        </Switch> 
+                    </CSSTransition>
+                </TransitionGroup>
                 <Footer />
             </div>
         );
